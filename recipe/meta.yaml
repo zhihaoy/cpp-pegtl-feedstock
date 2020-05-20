@@ -1,0 +1,43 @@
+{% set version = "3.0.0.git.135fa654" %}
+{% set sha256 = "94ca455787325623a04bf07d8db80d7803a670f415d5efeaabf915c99bc5cec6" %}
+
+package:
+  name: pegtl
+  version: {{ version }}
+
+source:
+  url: https://github.com/taocpp/PEGTL/archive/135fa654.zip
+  sha256: {{ sha256 }}
+
+build:
+  number: 0
+  skip: True  # [win and vc<14]
+
+requirements:
+  build:
+    - {{ compiler('cxx') }}
+    - cmake >=3.8
+    - ninja
+  host: []  # Empty host dependency section
+
+test:
+  commands:
+    - test -f ${PREFIX}/include/tao/pegtl.hpp                 # [unix]
+    - test -f ${PREFIX}/share/pegtl/cmake/pegtl-config.cmake  # [unix]
+    - if exist %LIBRARY_PREFIX%\include\tao\pegtl.hpp (exit 0) else (exit 1)                 # [win]
+    - if exist %LIBRARY_PREFIX%\share\pegtl\cmake\pegtl-config.cmake (exit 0) else (exit 1)  # [win]
+
+about:
+  home: https://github.com/taocpp/PEGTL
+  license: MIT
+  license_file: LICENSE
+  summary: The Parsing Expression Grammar Template Library
+  description: |
+    The Parsing Expression Grammar Template Library (PEGTL) is a
+    zero-dependency C++ header-only parser combinator library for
+    creating parsers according to a Parsing Expression Grammar (PEG).
+  doc_url: https://github.com/taocpp/PEGTL/blob/master/doc/README.md
+
+extra:
+  recipe-maintainers:
+    - zhihao.yuan
